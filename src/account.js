@@ -19,6 +19,7 @@ declare type AccountRecordType = {
 	user_name: ?string,
 	password: string,
 	email: string,
+	title: ?string,
 	first_name: string,
 	middle_name: ?string,
 	last_name: string,
@@ -40,6 +41,7 @@ declare type DraftAccountRecordType = {
 	user_name: ?string,
 	password: string,
 	email: string,
+	title: ?string,
 	first_name: string,
 	middle_name: ?string,
 	last_name: string,
@@ -55,11 +57,12 @@ declare type DraftAccountRecordType = {
 	created?: moment
 }
 
-const ATTRIBUTES = 'a.id, a.directory_id, a.user_name, a.password, a.email, a.first_name, a.middle_name, a.last_name, a.address_1, a.address_2, a.city, a.state, a.postal_code, a.country, a.phone, a.timezone, a.status, a.created';
+const ATTRIBUTES = 'a.id, a.directory_id, a.user_name, a.password, a.email, a.title, a.first_name, a.middle_name, a.last_name, a.address_1, a.address_2, a.city, a.state, a.postal_code, a.country, a.phone, a.timezone, a.status, a.created';
 
 const USERNAME_LEN = 100;
 const PASSWORD_LEN = 255;
 const EMAIL_LEN = 255;
+const TITLE_LEN = 5;
 const FIRST_NAME_LEN = 64;
 const MIDDLE_NAME_LEN = 64;
 const LAST_NAME_LEN = 64;
@@ -84,6 +87,8 @@ class Account {
 	_password: ?string;
 
 	_email: string;
+
+	_title: ?string;
 
 	_firstName: string;
 
@@ -122,6 +127,7 @@ class Account {
 		this._userName = options.userName;
 		this._email = email;
 		this._password = options.password;
+		this._title = options.title;
 		this._firstName = firstName;
 		this._middleName = options.middleName;
 		this._lastName = lastName;
@@ -183,6 +189,18 @@ class Account {
 	set email (email: string): void {
 
 		this._email = email;
+
+	}
+
+	get title (): ?string {
+
+		return this._title;
+
+	}
+
+	set title (title: ?string): void {
+
+		this._title = title;
 
 	}
 
@@ -407,6 +425,12 @@ class Account {
 		if (this.email.length > EMAIL_LEN) {
 
 			throw new Error(`email cannot have string length greater than ${EMAIL_LEN}`);
+
+		}
+
+		if (this.title && this.title.length > TITLE_LEN) {
+
+			throw new Error(`title cannot have string length greater than ${TITLE_LEN}`);
 
 		}
 
@@ -675,6 +699,7 @@ class Account {
 				id: record.id,
 				password: record.password,
 				userName: record.user_name,
+				title: record.title,
 				middleName: record.middle_name,
 				address1: record.address_1,
 				address2: record.address_2,
@@ -699,6 +724,7 @@ class Account {
 			user_name: account.userName,
 			password: account._password || '',
 			email: account.email,
+			title: account.title,
 			first_name: account.firstName,
 			middle_name: account.middleName,
 			last_name: account.lastName,
