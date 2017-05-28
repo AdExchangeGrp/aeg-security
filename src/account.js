@@ -82,7 +82,7 @@ class Account {
 
 	_directoryId: string;
 
-	_userName: ?string;
+	_username: ?string;
 
 	_password: ?string;
 
@@ -124,7 +124,7 @@ class Account {
 
 		this._id = options.id || uuid.v4();
 		this._directoryId = directoryId;
-		this._userName = options.userName;
+		this._username = options.username;
 		this._email = email;
 		this._password = options.password;
 		this._title = options.title;
@@ -168,15 +168,15 @@ class Account {
 
 	}
 
-	get userName (): ?string {
+	get username (): ?string {
 
-		return this._userName;
+		return this._username;
 
 	}
 
-	set userName (userName: ?string): void {
+	set username (username: ?string): void {
 
-		this._userName = userName;
+		this._username = username;
 
 	}
 
@@ -368,13 +368,13 @@ class Account {
 
 			}
 
-			if (this.userName) {
+			if (this.username) {
 
-				const accountByUserName = await Account.byUserNameAndDirectory(this.userName, this.directoryId, {connection});
+				const accountByUsername = await Account.byUserNameAndDirectory(this.username, this.directoryId, {connection});
 
-				if (accountByUserName && accountByUserName.id !== this.id) {
+				if (accountByUsername && accountByUsername.id !== this.id) {
 
-					throw new Error('Account by that userName already exists');
+					throw new Error('Account by that username already exists');
 
 				}
 
@@ -404,9 +404,9 @@ class Account {
 
 	validate (): void {
 
-		if (this.userName && this.userName.length > USERNAME_LEN) {
+		if (this.username && this.username.length > USERNAME_LEN) {
 
-			throw new Error(`userName cannot have string length greater than ${USERNAME_LEN}`);
+			throw new Error(`username cannot have string length greater than ${USERNAME_LEN}`);
 
 		}
 
@@ -649,20 +649,20 @@ class Account {
 
 	}
 
-	static async byUserName (userName: string, options: { connection?: Object } = {}): Promise<Array<Account>> {
+	static async byUserName (username: string, options: { connection?: Object } = {}): Promise<Array<Account>> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.user_name = ?`;
 		const db = options.connection || DB.pool;
-		const records = await db.query(query, [userName]);
+		const records = await db.query(query, [username]);
 		return records.map(this._mapToEntity);
 
 	}
 
-	static async byUserNameAndDirectory (userName: string, directoryId: string, options: { connection?: Object } = {}): Promise<?Account> {
+	static async byUserNameAndDirectory (username: string, directoryId: string, options: { connection?: Object } = {}): Promise<?Account> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.user_name = ? and a.directory_id = ?`;
 		const db = options.connection || DB.pool;
-		const records = await db.query(query, [userName, directoryId]);
+		const records = await db.query(query, [username, directoryId]);
 
 		if (!records.length) {
 
@@ -698,7 +698,7 @@ class Account {
 			{
 				id: record.id,
 				password: record.password,
-				userName: record.user_name,
+				username: record.user_name,
 				title: record.title,
 				middleName: record.middle_name,
 				address1: record.address_1,
@@ -721,7 +721,7 @@ class Account {
 		return {
 			id: account.id,
 			directory_id: account.directoryId,
-			user_name: account.userName,
+			user_name: account.username,
 			password: account._password || '',
 			email: account.email,
 			title: account.title,
