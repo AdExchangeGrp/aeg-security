@@ -1,3 +1,4 @@
+import DB from '../../src/db';
 import { MySQLPooled } from '@adexchange/aeg-mysql';
 import logger from './logger-mock';
 
@@ -16,4 +17,4 @@ export const options = {
 	dateStrings: true
 };
 
-export default new MySQLPooled(options);
+DB.initialize(new MySQLPooled(options));

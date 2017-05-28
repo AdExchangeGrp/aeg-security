@@ -1,7 +1,7 @@
 // @flow
 
 import { DateConversions } from '@adexchange/aeg-common';
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import Directory from './directory';
 import Account from './account';
 import uuid from 'uuid';
@@ -110,7 +110,7 @@ class Group {
 
 		this.validate();
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const groupByName = await Group.byNameAndDirectory(this.name, this.directoryId, {connection});
 
@@ -138,7 +138,7 @@ class Group {
 
 	async del (): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.group WHERE id = ?', [this.id]);
+		await DB.pool.query('DELETE FROM security_service.group WHERE id = ?', [this.id]);
 
 	}
 
@@ -166,20 +166,20 @@ class Group {
 
 	async addAccount (id: string): Promise<void> {
 
-		await aurora.query('INSERT INTO security_service.account_group (account_id, group_id) VALUES (?, ?)', [id, this.id]);
+		await DB.pool.query('INSERT INTO security_service.account_group (account_id, group_id) VALUES (?, ?)', [id, this.id]);
 
 	}
 
 	async removeAccount (id: string): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.account_group WHERE account_id = ? AND group_id = ?', [id, this.id]);
+		await DB.pool.query('DELETE FROM security_service.account_group WHERE account_id = ? AND group_id = ?', [id, this.id]);
 
 	}
 
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?Group> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.group g WHERE g.id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -195,7 +195,7 @@ class Group {
 	static async byNameAndDirectory (name: string, directoryId: string, options: { connection?: Object } = {}): Promise<?Group> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.group g WHERE g.name = ? and g.directory_id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [name, directoryId]);
 
 		if (!records.length) {
@@ -210,7 +210,7 @@ class Group {
 
 	static async byAccountIdAndEnabled (id: string, options: { connection?: Object } = {}): Promise<Array<Group>> {
 
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 
 		const query =
 			`SELECT ${ATTRIBUTES} FROM security_service.group g \

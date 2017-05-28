@@ -1,7 +1,7 @@
 // @flow
 
 import { DateConversions } from '@adexchange/aeg-common';
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import Account from './account';
 import uuid from 'uuid';
 import moment from 'moment-timezone';
@@ -107,7 +107,7 @@ class ApiKey {
 
 	async save (): Promise<void> {
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const apiKey = await ApiKey.byId(this.id, {connection});
 
@@ -127,7 +127,7 @@ class ApiKey {
 
 	async del (): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.account_api_key WHERE id = ?', [this.id]);
+		await DB.pool.query('DELETE FROM security_service.account_api_key WHERE id = ?', [this.id]);
 
 	}
 
@@ -140,7 +140,7 @@ class ApiKey {
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?ApiKey> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account_api_key k WHERE k.id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -156,7 +156,7 @@ class ApiKey {
 	static async byPublic (pub: string, options: { connection?: Object } = {}): Promise<?ApiKey> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account_api_key k WHERE k.public = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [pub]);
 
 		if (!records.length) {
@@ -171,7 +171,7 @@ class ApiKey {
 
 	static async byAccountId (id: string, options: { connection?: Object } = {}): Promise<Array<ApiKey>> {
 
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account_api_key k WHERE k.account_id = ? ORDER BY k.public`;
 

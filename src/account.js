@@ -3,7 +3,7 @@
 // https://nakedsecurity.sophos.com/2016/08/18/nists-new-password-rules-what-you-need-to-know/
 
 import { DateConversions } from '@adexchange/aeg-common';
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import ApiKey from './api-key';
 import Directory from './directory';
 import Group from './group';
@@ -340,7 +340,7 @@ class Account {
 
 		this.validate();
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const accountByEmail = await Account.byEmailAndDirectory(this.email, this.directoryId, {connection});
 
@@ -380,7 +380,7 @@ class Account {
 
 	async del (): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.account WHERE id = ?', [this.id]);
+		await DB.pool.query('DELETE FROM security_service.account WHERE id = ?', [this.id]);
 
 	}
 
@@ -587,7 +587,7 @@ class Account {
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?Account> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -603,7 +603,7 @@ class Account {
 	static async byEmailAndDirectory (email: string, directoryId: string, options: { connection?: Object } = {}): Promise<?Account> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.email = ? and a.directory_id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [email, directoryId]);
 
 		if (!records.length) {
@@ -619,7 +619,7 @@ class Account {
 	static async byEmail (email: string, options: { connection?: Object } = {}): Promise<Array<Account>> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.email = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [email]);
 		return records.map(this._mapToEntity);
 
@@ -628,7 +628,7 @@ class Account {
 	static async byUserName (userName: string, options: { connection?: Object } = {}): Promise<Array<Account>> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.user_name = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [userName]);
 		return records.map(this._mapToEntity);
 
@@ -637,7 +637,7 @@ class Account {
 	static async byUserNameAndDirectory (userName: string, directoryId: string, options: { connection?: Object } = {}): Promise<?Account> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.account a WHERE a.user_name = ? and a.directory_id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [userName, directoryId]);
 
 		if (!records.length) {
@@ -652,7 +652,7 @@ class Account {
 
 	static async byGroupId (id: string, options: { connection?: Object } = {}): Promise<Array<Account>> {
 
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 
 		let query = `SELECT ${ATTRIBUTES} FROM security_service.account a \
 		             INNER JOIN security_service.account_group ag ON a.id = ag.account_id \

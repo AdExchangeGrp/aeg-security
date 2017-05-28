@@ -1,7 +1,7 @@
 // @flow
 
 import { DateConversions } from '@adexchange/aeg-common';
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import uuid from 'uuid';
 import Organization from './organization';
 import Group from './group';
@@ -128,7 +128,7 @@ class Directory {
 
 		this.validate();
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const directoryByName = await Directory.byNameAndOrganization(this.name, this.organizationId, {connection});
 
@@ -182,7 +182,7 @@ class Directory {
 
 	async del (): Promise<void> {
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			await connection.query('DELETE FROM security_service.directory WHERE id = ?', [this.id]);
 
@@ -285,19 +285,19 @@ class Directory {
 
 	async addToApplication (id: string): Promise<void> {
 
-		return aurora.query('INSERT INTO security_service.application_directory (application_id, directory_id) VALUES (?, ?)', [id, this.id]);
+		return DB.pool.query('INSERT INTO security_service.application_directory (application_id, directory_id) VALUES (?, ?)', [id, this.id]);
 
 	}
 
 	async removeFromApplication (id: string): Promise<void> {
 
-		return aurora.query('DELETE FROM security_service.application_directory WHERE application_id = ? AND directory_id = ?', [id, this.id]);
+		return DB.pool.query('DELETE FROM security_service.application_directory WHERE application_id = ? AND directory_id = ?', [id, this.id]);
 
 	}
 
 	async belongsToApplication (applicationId: string): Promise<boolean> {
 
-		const result = await aurora.query('SELECT count(1) as c FROM security_service.application_directory WHERE directory_id = ? AND application_id = ?', [this.id, applicationId]);
+		const result = await DB.pool.query('SELECT count(1) as c FROM security_service.application_directory WHERE directory_id = ? AND application_id = ?', [this.id, applicationId]);
 		return result[0].c > 0;
 
 	}
@@ -305,7 +305,7 @@ class Directory {
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?Directory> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.directory d WHERE id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -321,7 +321,7 @@ class Directory {
 	static async byNameAndOrganization (name: string, organizationId: string, options: { connection?: Object } = {}): Promise<?Directory> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.directory d WHERE name = ? and organization_id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [name, organizationId]);
 
 		if (!records.length) {
@@ -336,7 +336,7 @@ class Directory {
 
 	static async byOrganizationCount (organizationId: string, options: { connection?: Object } = {}): Promise<number> {
 
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const result = await db.query('SELECT COUNT(1) as c FROM security_service.directory WHERE organization_id = ?', [organizationId]);
 		return result[0].c;
 
@@ -345,7 +345,7 @@ class Directory {
 	static async byIsDefaultAndOrganization (organizationId: string, options: { connection?: Object } = {}): Promise<?Directory> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.directory d WHERE organization_id = ? AND is_default = 1`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [organizationId]);
 
 		if (!records.length) {
@@ -363,7 +363,7 @@ class Directory {
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.directory d 
 					   INNER JOIN security_service.application_directory ad ON ad.directory_id = d.id
 					   WHERE ad.application_id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [applicationId]);
 		return records.map(this._mapToEntity);
 

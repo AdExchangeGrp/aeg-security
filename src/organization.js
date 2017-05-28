@@ -1,7 +1,7 @@
 // @flow
 
 import { DateConversions } from '@adexchange/aeg-common';
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import moment from 'moment-timezone';
 import slug from 'slug';
 import uuid from 'uuid';
@@ -114,7 +114,7 @@ class Organization {
 
 		this.validate();
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const organizationByName = await Organization.byNameKey(this.nameKey, {connection});
 
@@ -142,7 +142,7 @@ class Organization {
 
 	async del (): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.organization WHERE id = ?', [this.id]);
+		await DB.pool.query('DELETE FROM security_service.organization WHERE id = ?', [this.id]);
 
 	}
 
@@ -223,7 +223,7 @@ class Organization {
 	static async all (options: { connection?: Object } = {}): Promise<Array<Organization>> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.organization ORDER BY name`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query);
 		return records.map(this._mapToEntity);
 
@@ -232,7 +232,7 @@ class Organization {
 	static async byType (type: string, options: { connection?: Object } = {}): Promise<Array<Organization>> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.organization WHERE type = ? ORDER BY name`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [type]);
 		return records.map(this._mapToEntity);
 
@@ -241,7 +241,7 @@ class Organization {
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?Organization> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.organization WHERE id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -257,7 +257,7 @@ class Organization {
 	static async byName (name: string, options: { connection?: Object } = {}): Promise<?Organization> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.organization WHERE name = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [name]);
 
 		if (!records.length) {
@@ -273,7 +273,7 @@ class Organization {
 	static async byNameKey (nameKey: string, options: { connection?: Object } = {}): Promise<?Organization> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.organization WHERE name_key = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [nameKey]);
 
 		if (!records.length) {

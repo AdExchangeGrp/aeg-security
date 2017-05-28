@@ -1,6 +1,6 @@
 // @flow
 
-import aurora from '../test/integration/aurora';
+import DB from './db';
 import uuid from 'uuid';
 import moment from 'moment-timezone';
 import { DateConversions } from '@adexchange/aeg-common';
@@ -147,7 +147,7 @@ class Application {
 
 		this.validate();
 
-		await aurora.withTransaction(async (connection) => {
+		await DB.pool.withTransaction(async (connection) => {
 
 			const application = await Application.byId(this.id, {connection});
 
@@ -167,7 +167,7 @@ class Application {
 
 	async del (): Promise<void> {
 
-		await aurora.query('DELETE FROM security_service.application WHERE id = ?', [this.id]);
+		await DB.pool.query('DELETE FROM security_service.application WHERE id = ?', [this.id]);
 
 	}
 
@@ -195,13 +195,13 @@ class Application {
 
 	async addDirectory (id: string): Promise<void> {
 
-		return aurora.query('INSERT INTO security_service.application_directory (application_id, directory_id) VALUES (?, ?)', [this.id, id]);
+		return DB.pool.query('INSERT INTO security_service.application_directory (application_id, directory_id) VALUES (?, ?)', [this.id, id]);
 
 	}
 
 	async removeDirectory (id: string): Promise<void> {
 
-		return aurora.query('DELETE FROM security_service.application_directory WHERE application_id = ? AND directory_id = ?', [this.id, id]);
+		return DB.pool.query('DELETE FROM security_service.application_directory WHERE application_id = ? AND directory_id = ?', [this.id, id]);
 
 	}
 
@@ -576,7 +576,7 @@ class Application {
 	static async byId (id: string, options: { connection?: Object } = {}): Promise<?Application> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.application WHERE id = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [id]);
 
 		if (!records.length) {
@@ -592,7 +592,7 @@ class Application {
 	static async byName (name: string, options: { connection?: Object } = {}): Promise<?Application> {
 
 		const query = `SELECT ${ATTRIBUTES} FROM security_service.application WHERE name = ?`;
-		const db = options.connection || aurora;
+		const db = options.connection || DB.pool;
 		const records = await db.query(query, [name]);
 
 		if (!records.length) {
