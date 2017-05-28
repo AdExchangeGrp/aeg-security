@@ -17,3 +17,14 @@ export default {
 	Organization,
 	Token
 };
+
+export {
+	DB,
+	Account,
+	ApiKey,
+	Application,
+	Directory,
+	Group,
+	Organization,
+	Token
+};
