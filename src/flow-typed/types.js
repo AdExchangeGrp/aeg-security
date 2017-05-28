@@ -57,7 +57,7 @@ export type GroupOptionsType = {
 export type AccountOptionsType = {
 	id?: string,
 	password?: string,
-	userName?: ?string,
+	username?: ?string,
 	title?: ?string,
 	middleName?: ?string,
 	address1?: ?string,
