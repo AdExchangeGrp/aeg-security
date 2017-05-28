@@ -27,7 +27,7 @@ after(async () => {
 //
 // 	const o = await Organization.byName('Ad Exchange Group');
 // 	console.log(o);
-// 	const acc = new Account((await o.defaultDirectory()).id, 'affiliate-service@adexchangegrp.com', 'Affiliate', 'Service');
+// 	const acc = new Account((await o.defaultDirectory()).id, 'test-admin@adexchangegrp.com', 'Test', 'Admin');
 // 	await acc.changePassword('7NH7og9nANP');
 // 	await acc.save();
 //
@@ -117,32 +117,32 @@ describe('#Account()', async () => {
 
 	});
 
-	it('should not create an account with the same userName', async () => {
+	it('should not create an account with the same username', async () => {
 
 		try {
 
-			const acc = new Account(dir.id, 'test3@test.com', 'test', 'test', {userName: 'test'});
-			acc.userName.should.be.equal('test');
+			const acc = new Account(dir.id, 'test3@test.com', 'test', 'test', {username: 'test'});
+			acc.username.should.be.equal('test');
 			await acc.changePassword('test');
 			await acc.save();
 
-			const acc2 = new Account(dir.id, 'test4@test.com', 'test', 'test', {userName: 'test'});
+			const acc2 = new Account(dir.id, 'test4@test.com', 'test', 'test', {username: 'test'});
 			await acc2.changePassword('test');
 			await acc2.save();
 
 		} catch (ex) {
 
-			ex.message.should.match(/userName already exists/);
+			ex.message.should.match(/username already exists/);
 
 			return;
 
 		}
 
-		throw new Error('should not save account with the same userName');
+		throw new Error('should not save account with the same username');
 
 	});
 
-	it('should update an account email and userName', async () => {
+	it('should update an account email and username', async () => {
 
 		const acc = new Account(dir.id, 'test9@test.com', 'test first', 'test last');
 		await acc.changePassword('test');
@@ -150,13 +150,13 @@ describe('#Account()', async () => {
 
 		const result = await Account.byEmailAndDirectory('test9@test.com', dir.id);
 		result.email = 'test10@test.com';
-		result.userName = 'me';
+		result.username = 'me';
 		await result.save();
 
 		const result2 = await Account.byId(result.id);
 		should.exist(result2);
 		result2.email.should.be.equal('test10@test.com');
-		result2.userName.should.be.equal('me');
+		result2.username.should.be.equal('me');
 
 	});
 
