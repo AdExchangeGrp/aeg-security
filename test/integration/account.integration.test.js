@@ -40,7 +40,7 @@ after(async () => {
 //
 // });
 
-describe.skip('#Account()', async () => {
+describe('#Account()', async () => {
 
 	it('should create an account', async () => {
 

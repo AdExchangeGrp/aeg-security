@@ -1,16 +1,13 @@
 import { MySQLPooled } from '@adexchange/aeg-mysql';
-import config from 'config';
 import logger from './logger-mock';
-
-const auroraConfig = config.get('app').aws.aurora;
 
 export const options = {
 	logger,
 	connectionLimit: 100,
-	host: auroraConfig.host,
-	user: auroraConfig.user,
-	port: auroraConfig.port,
-	password: auroraConfig.password,
+	host: 'camp-ci-cluster.cluster-crg9xjuvtppr.us-west-2.rds.amazonaws.com',
+	user: 'sec_service',
+	port: 3306,
+	password: '2hsdfhSD82d',
 	insecureAuth: true,
 	acquireTimeout: 240000,
 	waitForConnections: true,

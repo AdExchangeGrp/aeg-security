@@ -1,7 +1,7 @@
 import should from 'should';
-import Organization from '../../../lib/organization';
-import Account from '../../../lib/account';
-import Group from '../../../lib/group';
+import Organization from '../../src/organization';
+import Account from '../../src/account';
+import Group from '../../src/group';
 
 let name = 'test dir group';
 let type = 'test';
