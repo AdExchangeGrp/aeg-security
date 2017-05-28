@@ -8,7 +8,7 @@ import Directory from './directory';
 import Account from './account';
 import nJwt from 'njwt';
 import secureRandom from 'secure-random';
-import config from 'config';
+import Config from './config';
 import tokenCache from './token-cache';
 import Token from './token';
 import ApiKey from './api-key';
@@ -35,8 +35,6 @@ declare type DraftApplicationRecordType = {
 	status: string,
 	created?: moment
 }
-
-const SECURITY_CONFIG = config.get('aeg-security');
 
 const ATTRIBUTES = 'id, name, signing_key, access_token_ttl, refresh_token_ttl, status, created';
 
@@ -251,7 +249,7 @@ class Application {
 
 		if (!account) {
 
-			const primaryDirectory = await Directory.byId(SECURITY_CONFIG.primaryDirectory);
+			const primaryDirectory = await Directory.byId(Config.security.primaryDirectory);
 
 			if (!primaryDirectory) {
 
