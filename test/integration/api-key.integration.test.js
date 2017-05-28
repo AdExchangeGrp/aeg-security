@@ -52,7 +52,11 @@ describe('#ApiKey()', async () => {
 
 		token = result.accessToken;
 
-		await (await Application.byName('Camp 2')).authenticateToken(token);
+		if (await (await Application.byName('Camp 2')).authenticateToken(token)) {
+
+			throw new Error('should not have authorized revoked token');
+
+		}
 
 	});
 
@@ -62,7 +66,11 @@ describe('#ApiKey()', async () => {
 
 		try {
 
-			await (await Application.byName('Camp 2')).authenticateToken(token);
+			if (await (await Application.byName('Camp 2')).authenticateToken(token)) {
+
+				throw new Error('should not have authorized revoked token');
+
+			}
 
 		} catch (ex) {
 

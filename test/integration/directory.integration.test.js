@@ -160,7 +160,7 @@ describe('#directory()', async () => {
 async function countByIsDefaultAndOrganization (organizationId) {
 
 	const query = 'SELECT id, organization_id, name, is_default, status, created FROM security_service.directory WHERE organization_id = ? AND is_default = 1';
-	const records = await DB.query(query, [organizationId]);
+	const records = await DB.pool.query(query, [organizationId]);
 	return records.length;
 
 }
