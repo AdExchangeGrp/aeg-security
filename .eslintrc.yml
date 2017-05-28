@@ -1,0 +1,46 @@
+extends:
+  - standard
+  - plugin:flowtype/recommended
+plugins:
+  - standard
+  - promise
+  - flowtype
+root: true
+parser: babel-eslint
+rules:
+  strict:
+    - 2
+    - safe
+  semi:
+    - 2
+    - always
+  no-tabs: 0
+  no-mixed-spaces-and-tabs:
+      - 2
+      - smart-tabs
+  padded-blocks:
+    - 2
+    - always
+  indent:
+    - 2
+    - tab
+    - SwitchCase: 1
+  quotes:
+    - 2
+    - single
+  linebreak-style:
+    - 2
+    - unix
+  eol-last:
+    - 2
+    - unix
+  no-multi-str:
+    - 0
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    impliedStrict: true
+    experimentalObjectRestSpread: true
+env:
+  node: true
+  es6: true

@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "babel-preset-latest"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-flow-strip-types",
+    [
+      "babel-plugin-transform-builtin-extend",
+      {
+        "globals": [
+          "Error",
+          "Array"
+        ]
+      }
+    ]
+  ]
+}
