@@ -233,9 +233,9 @@ class Application {
 
 		const organization = await directory.organization;
 
-		if (!organization || organization.status !== 'ENABLED') {
+		if (!organization) {
 
-			throw new Error('Organization is disabled or does not exist');
+			throw new Error('Organization does not exist');
 
 		}
 
@@ -388,9 +388,9 @@ class Application {
 
 		const organization = await directory.organization;
 
-		if (!organization || organization.status !== 'ENABLED') {
+		if (!organization) {
 
-			throw new Error('Organization is disabled or does not exist');
+			throw new Error('Organization does not exist');
 
 		}
 
@@ -493,9 +493,9 @@ class Application {
 
 		const organization = await directory.organization;
 
-		if (!organization || organization.status !== 'ENABLED') {
+		if (!organization) {
 
-			throw new Error('Organization is disabled or does not exist');
+			throw new Error('Organization does not exist');
 
 		}
 
