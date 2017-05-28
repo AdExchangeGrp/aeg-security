@@ -1,6 +1,6 @@
 {
   "name": "@adexchange/aeg-security",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Camp 2.0 security",
   "main": "./lib/index.js",
   "author": "Justin Durham",
