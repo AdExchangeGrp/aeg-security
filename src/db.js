@@ -4,7 +4,7 @@ class DB {
 
 	_pool: Object;
 
-	get pool () {
+	get pool (): Object {
 
 		if (!this._pool) {
 
