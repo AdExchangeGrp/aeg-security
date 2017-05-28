@@ -1,7 +1,7 @@
 import should from 'should';
 import Organization from '../../src/organization';
 import Directory from '../../src/directory';
-import aurora from './aurora';
+import DB from '../../src/db';
 
 let name = 'test dir2';
 let type = 'test';
@@ -160,7 +160,7 @@ describe('#directory()', async () => {
 async function countByIsDefaultAndOrganization (organizationId) {
 
 	const query = 'SELECT id, organization_id, name, is_default, status, created FROM security_service.directory WHERE organization_id = ? AND is_default = 1';
-	const records = await aurora.query(query, [organizationId]);
+	const records = await DB.query(query, [organizationId]);
 	return records.length;
 
 }

@@ -3,7 +3,6 @@ import ApiKey from '../../src/api-key';
 import Account from '../../src/account';
 import Organization from '../../src/organization';
 import Application from '../../src/application';
-// import { authorize as authorizeToken } from '../../../src/oauth-security-handler';
 
 let app, org, dir, acc, apiKeyId, token;
 const name = 'test account apikey';
