@@ -53,7 +53,7 @@ describe('#ApiKey()', async () => {
 
 		token = result.accessToken;
 
-		// await authorizeToken({headers: {authorization: 'bearer ' + result.accessToken}}, null, [], true);
+		await (await Application.byName('Camp 2')).authenticateToken(token);
 
 	});
 
@@ -63,7 +63,7 @@ describe('#ApiKey()', async () => {
 
 		try {
 
-			// await authorizeToken({headers: {authorization: 'bearer ' + token}}, null, [], true);
+			await (await Application.byName('Camp 2')).authenticateToken(token);
 
 		} catch (ex) {
 
