@@ -20,7 +20,7 @@ class TokenCache extends Redis {
 
 	}
 
-	static instance () {
+	static get instance () {
 
 		if (!this._instance) {
 
