@@ -58,6 +58,7 @@ export type AccountOptionsType = {
 	id?: string,
 	password?: string,
 	userName?: ?string,
+	title?: ?string,
 	middleName?: ?string,
 	address1?: ?string,
 	address2?: ?string,
