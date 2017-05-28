@@ -9,7 +9,7 @@ import Account from './account';
 import nJwt from 'njwt';
 import secureRandom from 'secure-random';
 import Config from './config';
-import tokenCache from './token-cache';
+import TokenCache from './token-cache';
 import Token from './token';
 import ApiKey from './api-key';
 import _ from 'lodash';
@@ -309,7 +309,7 @@ class Application {
 		refreshJWT.setHeader('stt', 'refresh');
 		const refreshToken = refreshJWT.compact();
 
-		await tokenCache.addAccessAndRefreshToken(this.signingKey, accessToken, refreshToken);
+		await TokenCache.instance.addAccessAndRefreshToken(this.signingKey, accessToken, refreshToken);
 
 		return {
 			accessToken,
@@ -416,7 +416,7 @@ class Application {
 		accessJWT.setExpiration(new Date().getTime() + (this._accessTokenTTLInSeconds * 1000));
 		const accessToken = accessJWT.compact();
 
-		await tokenCache.addAccessToken(this.signingKey, accessToken);
+		await TokenCache.instance.addAccessToken(this.signingKey, accessToken);
 
 		return {
 			accessToken,
@@ -429,7 +429,7 @@ class Application {
 
 	async refreshToken (refreshToken: string): Promise<TokenResponseType> {
 
-		const exists = await tokenCache.getRefreshToken(refreshToken);
+		const exists = await TokenCache.instance.getRefreshToken(refreshToken);
 
 		if (!exists) {
 
@@ -522,7 +522,7 @@ class Application {
 		accessJWT.setExpiration(new Date().getTime() + (this._accessTokenTTLInSeconds * 1000));
 		const accessToken = accessJWT.compact();
 
-		await tokenCache.addAccessAndRefreshToken(this.signingKey, accessToken, refreshToken);
+		await TokenCache.instance.addAccessAndRefreshToken(this.signingKey, accessToken, refreshToken);
 
 		return {
 			accessToken,
@@ -548,22 +548,22 @@ class Application {
 
 	async authenticateToken (token: string): Promise<boolean> {
 
-		const result = await tokenCache.getAccessToken(token);
+		const result = await TokenCache.instance.getAccessToken(token);
 		return !!result;
 
 	}
 
 	async revokeGrant (accessToken: string): Promise<void> {
 
-		const token = await tokenCache.getAccessToken(accessToken);
+		const token = await TokenCache.instance.getAccessToken(accessToken);
 
 		if (token) {
 
-			await tokenCache.deleteAccessToken(accessToken);
+			await TokenCache.instance.deleteAccessToken(accessToken);
 
 			if (token.refreshToken) {
 
-				await tokenCache.deleteRefreshToken(token.refreshToken);
+				await TokenCache.instance.deleteRefreshToken(token.refreshToken);
 
 			}
 

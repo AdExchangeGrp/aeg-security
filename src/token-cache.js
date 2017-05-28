@@ -9,12 +9,26 @@ import Token from './token';
  */
 class TokenCache extends Redis {
 
+	_instance: TokenCache;
+
 	/**
 	 * Constructor
 	 */
 	constructor () {
 
 		super({host: Config.security.cache.host, port: Config.security.cache.port, prefix: 'aeg-security:'});
+
+	}
+
+	static get instance () {
+
+		if (!this._instance) {
+
+			this._instance = new TokenCache();
+
+		}
+
+		return this._instance;
 
 	}
 
@@ -132,4 +146,4 @@ class TokenCache extends Redis {
 
 }
 
-export default new TokenCache();
+export default TokenCache;

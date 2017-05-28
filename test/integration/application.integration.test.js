@@ -5,7 +5,7 @@ import Directory from '../../src/directory';
 import Account from '../../src/account';
 import Group from '../../src/group';
 import nJwt from 'njwt';
-import tokenCache from '../../src/token-cache';
+import TokenCache from '../../src/token-cache';
 
 let application, signingKey, adexDir, adexOrg, adexAcc, adexGrp, oauthOrg, oauthDir, oauthAcc;
 
@@ -121,18 +121,18 @@ describe('#application()', async () => {
 		const jwt = await verify(result.accessToken, application.signingKey);
 		jwt.body.organization.href.should.be.equal(oauthOrg.id);
 
-		const t1 = await tokenCache.getAccessToken(result.accessToken);
+		const t1 = await TokenCache.instance.getAccessToken(result.accessToken);
 		should.exist(t1);
 		t1.should.have.properties(['refreshToken']);
-		const t2 = await tokenCache.getRefreshToken(result.refreshToken);
+		const t2 = await TokenCache.instance.getRefreshToken(result.refreshToken);
 		should.exist(t2);
 		t2.should.have.properties(['accessToken']);
 
 		await application.revokeGrant(result.accessToken);
 
-		const t3 = await tokenCache.getAccessToken(result.accessToken);
+		const t3 = await TokenCache.instance.getAccessToken(result.accessToken);
 		should.not.exist(t3);
-		const t4 = await tokenCache.getRefreshToken(result.refreshToken);
+		const t4 = await TokenCache.instance.getRefreshToken(result.refreshToken);
 		should.not.exist(t4);
 
 	});
