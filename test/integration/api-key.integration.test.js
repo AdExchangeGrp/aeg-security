@@ -66,19 +66,19 @@ describe('#ApiKey()', async () => {
 
 		try {
 
-			if (await (await Application.byName('Camp 2')).authenticateToken(token)) {
+			if (!await (await Application.byName('Camp 2')).authenticateToken(token)) {
 
-				throw new Error('should not have authorized revoked token');
+				return;
 
 			}
 
+			throw new Error('should not have authorized revoked token');
+
 		} catch (ex) {
 
-			return;
+			// should error
 
 		}
-
-		throw new Error('should not have authorized revoked token');
 
 	});
 

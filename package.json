@@ -11,6 +11,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "test": "mocha --recursive --compilers js:babel-core/register test/",
+    "test:organization": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/organization.integration.test.js",
+    "test:application": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/application.integration.test.js",
+    "test:directory": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/directory.integration.test.js",
+    "test:group": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/group.integration.test.js",
+    "test:account": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/account.integration.test.js",
+    "test:apikey": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/api-key.integration.test.js",
     "test:coverage": "istanbul cover _mocha -- --recursive --compilers js:babel-core/register test/",
     "eslint": "eslint .",
     "eslint:watch": "npm run eslint && onchange \"**/*.js\" \".jshint*\" -- npm run eslint",
