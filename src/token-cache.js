@@ -1,10 +1,8 @@
 // @flow
 
 import Redis from '@adexchange/aeg-redis';
-import config from 'config';
+import Config from './config';
 import Token from './token';
-
-const SECURITY_CONFIG = config.get('aeg-security');
 
 /**
  * Token cache
@@ -16,7 +14,7 @@ class TokenCache extends Redis {
 	 */
 	constructor () {
 
-		super({host: SECURITY_CONFIG.cache.host, port: SECURITY_CONFIG.cache.port, prefix: 'aeg-security:'});
+		super({host: Config.security.cache.host, port: Config.security.cache.port, prefix: 'aeg-security:'});
 
 	}
 
