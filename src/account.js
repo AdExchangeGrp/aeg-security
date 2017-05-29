@@ -531,6 +531,13 @@ class Account {
 	async addToGroupById (id: string): Promise<void> {
 
 		const group = await Group.byId(id);
+
+		if (!group) {
+
+			throw new Error('Group does not exist');
+
+		}
+
 		return group.addAccount(this.id);
 
 	}
@@ -538,6 +545,13 @@ class Account {
 	async removeFromGroupById (id: string): Promise<void> {
 
 		const group = await Group.byId(id);
+
+		if (!group) {
+
+			throw new Error('Group does not exist');
+
+		}
+
 		return group.removeAccount(this.id);
 
 	}
@@ -545,6 +559,13 @@ class Account {
 	async addToGroupByName (name: string): Promise<void> {
 
 		const group = await Group.byNameAndDirectory(name, this.directoryId);
+
+		if (!group) {
+
+			throw new Error('Group does not exist');
+
+		}
+
 		return group.addAccount(this.id);
 
 	}
@@ -552,6 +573,13 @@ class Account {
 	async removeFromGroupByName (name: string): Promise<void> {
 
 		const group = await Group.byNameAndDirectory(name, this.directoryId);
+
+		if (!group) {
+
+			throw new Error('Group does not exist');
+
+		}
+
 		return group.removeAccount(this.id);
 
 	}
