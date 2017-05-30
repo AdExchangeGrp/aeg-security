@@ -1,7 +1,0 @@
-aeg-security:
-  application: f0234fba-519b-41d1-95ee-3d5cf873aed2
-  primaryOrganization: 3f69e8ca-5c2b-4c0f-849a-673dc185f9f5
-  primaryDirectory: d843415b-4adf-4dfd-8e14-68fb8cedcf7d
-  cache:
-    host: '192.168.99.100'
-    port: 32769

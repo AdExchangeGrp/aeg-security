@@ -11,12 +11,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "test": "mocha --recursive --compilers js:babel-core/register test/",
-    "test:organization": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/organization.integration.test.js",
-    "test:application": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/application.integration.test.js",
-    "test:directory": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/directory.integration.test.js",
-    "test:group": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/group.integration.test.js",
-    "test:account": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/account.integration.test.js",
-    "test:apikey": "mocha --recursive --compilers js:babel-core/register test/integration/aurora.js test/integration/api-key.integration.test.js",
     "test:coverage": "istanbul cover _mocha -- --recursive --compilers js:babel-core/register test/",
     "eslint": "eslint .",
     "eslint:watch": "npm run eslint && onchange \"**/*.js\" \".jshint*\" -- npm run eslint",
@@ -49,19 +43,7 @@
     "should": "^11.2.1"
   },
   "dependencies": {
-    "@adexchange/aeg-common": "0.0.38",
-    "@adexchange/aeg-mysql": "0.0.36",
-    "@adexchange/aeg-redis": "0.0.30",
-    "babel-runtime": "^6.23.0",
-    "bcrypt": "^1.0.2",
-    "config": "^1.26.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.18.1",
-    "moment-timezone": "^0.5.13",
-    "njwt": "^0.4.0",
-    "secure-random": "^1.1.1",
-    "slug": "^0.9.1",
-    "uuid": "^3.0.1"
+    "njwt": "^0.4.0"
   },
   "engine": "node >= 6.10.0"
 }
