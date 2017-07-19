@@ -1,10 +1,11 @@
-// @flow
-
 import nJwt from 'njwt';
 
 class Token {
 
-	static async verify (token: string, secret: string): Promise<Object> {
+	/**
+	 * Verify a token is valid
+	 */
+	public static async verify (token: string, secret: string): Promise<any> {
 
 		return new Promise((resolve, reject) => {
 
@@ -28,10 +29,8 @@ class Token {
 
 	/**
 	 * Parses the token from the authorization header
-	 * @param {string} authorization
-	 * @returns {*}
 	 */
-	static parseTokenFromAuthorization (authorization: string): string {
+	public static parseTokenFromAuthorization (authorization: string): string {
 
 		if (!authorization) {
 
@@ -55,11 +54,8 @@ class Token {
 
 	/**
 	 * Will this token expire soon
-	 * @param {string} token
-	 * @param {string} secret
-	 * @param {number} seconds
 	 */
-	static async willExpire (token: string, secret: string, seconds: number): Promise<void> {
+	public static async willExpire (token: string, secret: string, seconds: number): Promise<void> {
 
 		const result = await Token.verify(token, secret);
 
@@ -74,10 +70,8 @@ class Token {
 
 	/**
 	 * Parses the account href from a JWT token
-	 * @param {Object} jwt
-	 * @returns {*}
 	 */
-	static parseAccountFromJwt (jwt: Object): string {
+	public static parseAccountFromJwt (jwt: any): string {
 
 		return jwt.body.account;
 
@@ -85,10 +79,8 @@ class Token {
 
 	/**
 	 * Parses an array of scopes from a JWT token
-	 * @param {Object} jwt
-	 * @returns {*}
 	 */
-	static parseScopesFromJwt (jwt: Object): Array<string> {
+	public static parseScopesFromJwt (jwt: any): string[] {
 
 		return jwt.body.scope ? jwt.body.scope.split(' ') : [];
 
@@ -96,10 +88,8 @@ class Token {
 
 	/**
 	 * Parses the environment from a JWT token
-	 * @param {Object} jwt
-	 * @returns {*}
 	 */
-	static parseEnvFromJwt (jwt: Object): string {
+	public static parseEnvFromJwt (jwt: any): string {
 
 		return jwt.body.env;
 
@@ -107,10 +97,8 @@ class Token {
 
 	/**
 	 * Parses the organization from a JWT token
-	 * @param {Object} jwt
-	 * @returns {*}
 	 */
-	static parseOrganizationFromJwt (jwt: Object): string {
+	public static parseOrganizationFromJwt (jwt: any): string {
 
 		return jwt.body.organization;
 
@@ -118,9 +106,8 @@ class Token {
 
 	/**
 	 * Determines whether the token is the result of a password OAUTH flow
-	 * @param {Object} jwt
 	 */
-	static isPasswordToken (jwt: Object): boolean {
+	public static isPasswordToken (jwt: any): boolean {
 
 		return jwt.body.grant === 'password';
 

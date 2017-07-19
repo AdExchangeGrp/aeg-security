@@ -10,37 +10,46 @@
   },
   "license": "UNLICENSED",
   "scripts": {
-    "test": "mocha --recursive --compilers js:babel-core/register test/",
-    "test:coverage": "istanbul cover _mocha -- --recursive --compilers js:babel-core/register test/",
-    "eslint": "eslint .",
-    "eslint:watch": "npm run eslint && onchange \"**/*.js\" \".jshint*\" -- npm run eslint",
-    "flow": "flow check",
-    "compile": "babel -d ./lib/ ./src/ && flow-copy-source ./src ./lib",
-    "build": "npm run eslint && npm run flow && npm run compile && istanbul cover _mocha -- --recursive --compilers js:babel-core/register --reporter mocha-junit-reporter test/unit",
-    "patch": "git reset --hard HEAD && git clean -fd && npm run compile && npm version patch -m \"[ci skip] %s\" && git push origin master && git push origin master --tags && npm publish"
+    "test": "mocha --recursive --compilers ts:ts-node/register test/**/*.ts",
+    "test:coverage": "nyc npm run test",
+    "lint": "tslint src/**/*.ts",
+    "lint:watch": "npm run lint && onchange \"**/*.ts\" \"tslint.json\" -- npm run lint",
+    "compile": "tsc",
+    "compile:watch": "npm run compile -- --watch",
+    "dev": "npm run compile:watch",
+    "build:test": "mocha --recursive --compilers ts:ts-node/register --reporter mocha-junit-reporter test/**/*.ts",
+    "build:coverage": "nyc npm run build:test"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-transform-builtin-extend": "^1.1.2",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-latest": "^6.24.1",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-flowtype": "^2.33.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-node": "^4.2.2",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "flow-bin": "^0.47.0",
-    "flow-copy-source": "^1.1.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.3.0",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^6.0.0",
+    "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.13.0",
+    "nyc": "^11.0.3",
     "onchange": "^3.2.1",
-    "should": "^11.2.1"
+    "should": "^11.2.0",
+    "ts-node": "^3.2.0",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.1"
   },
   "dependencies": {
     "njwt": "^0.4.0"
