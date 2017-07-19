@@ -30,8 +30,11 @@ node_modules
 
 ~$*
 
-/.idea/workspace.xml
-
 xunit.xml
 
 /lib
+
+/.idea/workspace.xml
+
+/test-results.xml
+.nyc_output
