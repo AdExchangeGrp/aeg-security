@@ -1,4 +1,4 @@
-import nJwt from 'njwt';
+import * as nJwt from 'njwt';
 
 class Token {
 
