@@ -1,9 +1,8 @@
-import Token from './token';
+import Token, { ITokenOrganization } from './token';
 
-export default {
-	Token
-};
+export default Token;
 
 export {
-	Token
+	Token,
+	ITokenOrganization
 };
