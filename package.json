@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Camp 2.0 security",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "author": "Justin Durham",
   "repository": {
     "type": "git",
